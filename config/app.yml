@@ -1,0 +1,21 @@
+all: 
+  sfTeraWurflPlugin: 
+    data_dir: "%sf_plugins_dir%/sfTeraWurflPlugin/data/" # important !
+    data_file: "wurfl.xml"
+    patch_file: "custom_web_patch.xml;web_browsers_patch.xml"
+    download_url: "http://downloads.sourceforge.net/project/wurfl/WURFL/latest/wurfl-latest.zip"
+    cvs_download_url: "http://wurfl.cvs.sourceforge.net/%2Acheckout%2A/wurfl/xml/wurfl.xml"
+    database: 
+      host: localhost
+      name: terawurfl       #database name
+      username: terawurfl
+      password: terawurfladmin
+      connector: MySQL5   
+      is_cache_enabled: true  #enable cache system (set to tru or false)
+      table: 
+        index: TeraWurflIndex  #index table 
+        merge: TeraWurflMerge  #merge table
+        cache: TeraWurflCache   # the cache table
+        prefix: TeraWurfl      #device prefix for tables of devices
+         
+       

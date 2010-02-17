@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<package xmlns="http://pear.php.net/dtd/package-2.0" xmlns:tasks="http://pear.php.net/dtd/tasks-1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" packagerversion="1.4.1" version="2.0" xsi:schemaLocation="http://pear.php.net/dtd/tasks-1.0 http://pear.php.net/dtd/tasks-1.0.xsd http://pear.php.net/dtd/package-2.0 http://pear.php.net/dtd/package-2.0.xsd">
+  <name>sfTeraWurflPlugin</name>
+  <channel>pear.symfony-project.com</channel>
+  <summary>sfTeraWurflPlugin is a symfony plugin that provides an easy way to use Tera-Wurfl library which is a PHP and MySQL based library that uses the Wireless Universal Resource File (WURFL) to identify specific device capabilities and features</summary>
+  <description>sfTeraWurflPlugin is a symfony plugin that provides an easy way to use Tera-Wurfl library which is a PHP and MySQL based library that uses the Wireless Universal Resource File (WURFL) to identify specific device capabilities and features.
+ 	to use it, just use the sfTeraWurfl object to access to all data.</description>
+  <lead>
+    <name>Skander Mabrouk</name>
+    <user>skonsoft</user>
+    <email>mabroukskander@gmail.com</email>
+    <active>yes</active>
+  </lead>
+  <date>2010-02-17</date>
+  <version>
+    <release>0.0.2</release>
+    <api>0.0.2</api>
+  </version>
+  <stability>
+    <release>alpha</release>
+    <api>alpha</api>
+  </stability>
+  <license uri="http://www.symfony-project.org/license">MIT license</license>
+  <notes>- first implémentation of sfTeraWurflPlugin</notes>
+  <contents>
+    <dir name="/">
+	 	<dir name="config">
+	 		<file name="app.yml" role="data" />
+	 		<file name="sfTeraWurflPluginConfiguration.class.php" role="data" />
+	 	</dir>
+	 	<dir name="data">
+	 		<file name="custom_web_patch_uas.txt" role="data" />
+	 		<file name="custom_web_patch.xml" role="data" />
+	 		<file name="web_browsers_patch.xml" role="data" />
+	 		<file name="wurfl.xml" role="data" />
+	 	</dir>
+	 	<dir name="lib">
+	 		<dir name="DatabaseConnectors">
+	 			<file name="TeraWurflDatabase_MySQL5.php" role="data" />
+	 		</dir>
+	 		<dir name="helper">
+	 			<file name="teraWurfulHelper.php" role="data" />
+	 		</dir>
+	 		<dir name="task">
+	 			<file name="terawurflCheckconfigTask.class.php" role="data" />
+	 		</dir>
+	 		<dir name="UserAgentMatchers">
+	 			<file name="AlcatelUserAgentMatcher.php" role="data" />
+	 			<file name="AndroidUserAgentMatcher.php" role="data" />
+	 			<file name="AOLUserAgentMatcher.php" role="data" />
+	 			<file name="AppleUserAgentMatcher.php" role="data" />
+	 			<file name="BenQUserAgentMatcher.php" role="data" />
+	 			
+	 			<file name="BlackBerryUserAgentMatcher.php" role="data" />
+	 			<file name="BotUserAgentMatcher.php" role="data" />
+	 			<file name="CatchAllUserAgentMatcher.php" role="data" />
+	 			<file name="ChromeUserAgentMatcher.php" role="data" />
+	 			<file name="DoCoMoUserAgentMatcher.php" role="data" />
+	 			
+	 			<file name="FirefoxUserAgentMatcher.php" role="data" />
+	 			<file name="GrundigUserAgentMatcher.php" role="data" />
+	 			<file name="HTCUserAgentMatcher.php" role="data" />
+	 			<file name="KddiUserAgentMatcher.php" role="data" />
+	 			<file name="KonquerorUserAgentMatcher.php" role="data" />
+	 			
+	 			<file name="KyoceraUserAgentMatcher.php" role="data" />
+	 			<file name="LGUserAgentMatcher.php" role="data" />
+	 			<file name="MitsubishiUserAgentMatcher.php" role="data" />
+	 			<file name="MotorolaUserAgentMatcher.php" role="data" />
+	 			<file name="MSIEUserAgentMatcher.php" role="data" />
+	 			
+	 			<file name="NecUserAgentMatcher.php" role="data" />
+	 			<file name="NintendoUserAgentMatcher.php" role="data" />
+	 			<file name="NokiaUserAgentMatcher.php" role="data" />
+	 			<file name="OperaMiniUserAgentMatcher.php" role="data" />
+	 			<file name="OperaUserAgentMatcher.php" role="data" />
+
+	 			<file name="PanasonicUserAgentMatcher.php" role="data" />
+	 			<file name="PantechUserAgentMatcher.php" role="data" />
+	 			<file name="PhilipsUserAgentMatcher.php" role="data" />
+	 			<file name="PortalmmmUserAgentMatcher.php" role="data" />
+	 			<file name="QtekUserAgentMatcher.php" role="data" />
+	 			<file name="SafariUserAgentMatcher.php" role="data" />
+	 			<file name="SagemUserAgentMatcher.php" role="data" />
+	 			<file name="SamsungUserAgentMatcher.php" role="data" />
+	 			<file name="SanyoUserAgentMatcher.php" role="data" />
+	 			
+	 			<file name="SharpUserAgentMatcher.php" role="data" />
+	 			<file name="SiemensUserAgentMatcher.php" role="data" />
+	 			<file name="SonyEricssonUserAgentMatcher.php" role="data" />
+	 			<file name="SPVUserAgentMatcher.php" role="data" />
+	 			<file name="ToshibaUserAgentMatcher.php" role="data" />
+	 			
+	 			<file name="UserAgentMatcher.php" role="data" />
+	 			<file name="VodafoneUserAgentMatcher.php" role="data" />
+	 			<file name="WindowsCEUserAgentMatcher.php" role="data" />
+	 		</dir>
+	 		<file name="sfTeraWurfl.class.php" role="data" />
+	 		<file name="sfTeraWurflConfig.class.php" role="data" />
+	 		<file name="TeraWurflDatabase.php" role="data" />
+	 		<file name="TeraWurflLoader.php" role="data" />
+	 		<file name="UserAgentFactory.php" role="data" />
+	 		<file name="UserAgentUtils.php" role="data" />
+	 		<file name="WurflConstants.php" role="data" />
+	 		<file name="WurflSupport.php" role="data" />
+	 	</dir>
+	 	<dir name="modules">
+ 			<dir name="sfTeraWurflAdmin" >
+ 				<dir name="actions">
+ 					<file name="actions.class.php" role="data" />
+ 				</dir>
+ 				<dir name="lib">
+ 					<file name="BasesfTeraWurflAdminActions.class.php" role="data" />
+ 				</dir>
+ 				<dir name="templates">
+ 					<file name="indexSuccess.php" role="data" />
+ 					<file name="_loader.php" role="data" />
+ 				</dir>
+ 			</dir>
+ 			<dir name="sfTeraWurflCheck">
+ 				<dir name="actions">
+ 					<file name="actions.class.php" role="data" />
+ 				</dir>
+ 				<dir name="lib">
+ 					<file name="BasesfTeraWurflCheckActions.class.php" role="data" />
+ 				</dir>
+ 				<dir name="templates">
+ 					<file name="indexSuccess.php" role="data" />
+ 				</dir>
+ 			</dir>
+	 	</dir>
+	 	<file name="LICENSE" role="data"/>
+	 	<file name="README" role="data"/>
+ 	</dir>
+  </contents>
+  <dependencies>
+    <required>
+      <php>
+        <min>5.2.4</min>
+      </php>
+      <pearinstaller>
+        <min>1.4.1</min>
+      </pearinstaller>
+      <package>
+        <name>symfony</name>
+        <channel>pear.symfony-project.com</channel>
+        <min>1.1.0</min>
+        <max>1.4.0</max>
+      </package>
+    </required>
+  </dependencies>
+  <phprelease></phprelease>
+  <changelog>
+  	<release>
+  		<version>
+  			<release>0.0.2</release>
+  			<api>0.0.1</api>
+  		</version>
+  		<stability>
+  			<release>alpha</release>
+  			<api>alpha</api>
+  		</stability>
+  		<date>2010-02-17</date>
+  		<notes>
+  			* skonsoft: cleaning up plugin
+  		</notes>
+  	</release>
+  </changelog>
+</package>

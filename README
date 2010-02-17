@@ -1,0 +1,121 @@
+= sfTeraWurflPlugin plugin =
+The sfTeraWurflPlugin plugin bridges the symfony framework and [http://www.tera-wurfl.com/ Tera-WURFL ] PHP/MySQL API library which is a PHP & MySQL based library that uses the Wireless Universal Resource File (WURFL) to detect the capabilities of mobile devices.
+
+== Installation ==
+
+To install the plugin for a symfony project, the usual process is to use the
+symfony command line.
+
+{{{
+$ symfony plugin:install sfTeraWurflPlugin
+}}}
+
+Alternatively, if you don't have PEAR installed, you can download the latest
+package attached to this plugin's wiki page and extract it under your project's
+`plugins/` directory. 
+
+Clear the cache to enable the autoloading to find the new classes:
+{{{
+$ php symfony cc
+}}}
+
+You're done.
+
+'''Note''': If the [http://www.symfony-project.org/plugins/sfThumbnailPlugin sfThumbnailPlugin] is not installed, you should install it. sfTeraWurflPlugin uses sfThumbnailPlugin to generate images for differents wireless devices.
+
+== Configuration ==
+'''Note''': This release version is just an implementation of [http://www.tera-wurfl.com/ Tera-WURFL ] PHP/MySQL API library ! for now we'll just use the Tera-WURFL files  and implement them into our project. it still an alpha version.
+
+First, You should, edit the TeraWurflConfig.php:
+{{{
+	/**
+	 * Database Hostname
+	 * @var String
+	 */
+	public static $DB_HOST = "localhost"; //server name
+	/**
+	 * Database User
+	 * @var String
+	 */
+	public static $DB_USER = "terawurfl"; // mysql user
+	/**
+	 * Database Password
+	 * @var String
+	 */
+	public static $DB_PASS = 'terawurfladmin'; // mysql password
+	/**
+	 * Database Name / Schema Name
+	 * @var String
+	 */
+	public static $DB_SCHEMA = "terawurfl"; // mysql database
+}}}
+
+'''Note''': For clariy, I suggest that you use a different data base and not your main project database.
+
+sfTeraWurflPlugin comes with an important module: sfTeraWurflAdmin, you will use this module to initialize database tables.
+go to your application settings.yml file and enable this module:
+{{{
+enabled_modules:        [default, sfTeraWurflAdmin]
+}}}
+
+You can now start using the sfTeraWurflAdmin by browsing to the application module's default page:
+
+http://myproject/frontend_dev.php/sfTeraWurflAdmin
+
+click Update database from local file link, to create and load tables.
+
+Before starting using sfTeraWurflPlugin, you should check that you have the correct configuration by launching task:
+
+{{{
+$ symfony terawurfl:check-config
+}}}
+ 
+if every things are ok, you will have response:
+{{{
+	./symfony terawurfl:check-config
+	
+	Checking TeraWurfl environnement ...
+	TeraWurfl Version Stable 2.0.0
+	*******************Checking PHP Configuration***********
+	PHP version: 5.2.10-2ubuntu6.4... [OK]
+	ZIP Archive... [OK]
+	Memory Limit 256M (via TeraWurflConfig::$MEMORY_LIMIT) 
+	*******************File Permissions***********
+	Wurfl File 	[OK]
+	Patch Files:
+	/var/www/test/trunk/plugins/sfTeraWurflPlugin/lib/../data/.custom_web_patch.xml...[OK]
+	/var/www/test/trunk/plugins/sfTeraWurflPlugin/lib/../data/.web_browsers_patch.xml...[OK]
+	DATA Directory:  /var/www/test/trunk/plugins/sfTeraWurflPlugin/lib/../data/...[OK]
+	********************* Database Settings************
+	Host: localhost
+	Username: terawurfl
+	Connecting to server....[OK]
+	DB Name (schema):terawurfl
+	TeraWurfl environnement checking 	 [OK]
+}}} 
+
+Now sfTeraWurflPlugin environment is ok, we start using it.
+
+== Content ==
+
+Get the User Agent capabilities:
+{{{
+	$ua = WurflSupport::getUserAgent(); // get the user agent
+  	$wurfl = new sfTeraWurfl();   //
+  	$wurfl->getDeviceCapabilitiesFromAgent($ua, TRUE); //load device capabilities
+  	$cap = $wurfl->capabilities; // get the capabilities.
+  	
+  	if ($cap ['product_info']['is_wireless_device'] == 1){ //wireless device
+	  	if (strpos ( $cap ['user_agent'], 'iPhone' ) !== false or strpos ( $cap ['user_agent'], 'iPod' ) !== false or strpos ( $cap ['user_agent'], 'Android' ) !== false) { //wireless category is iphone (Considering that Android is an iphone).
+			$device = 'iphone';
+		} elseif ($cap ['product_info'] ['pointing_method'] == 'touchscreen') {  // wireless category is Touch
+			$device = 'touch';
+		} else {
+			$device = 'xhtmlmp';  // other mobiles like Nokia, Samsung ...
+		}
+  	}
+}}}
+
+To get the complete list of capabilities is available here: [http://wurfl.sourceforge.net/help_doc.php#product_info http://wurfl.sourceforge.net/help_doc.php#product_info]
+
+Refer to [http://www.symfony-project.org/blog/2008/06/09/how-to-create-an-optimized-version-of-your-website-for-the-iphone-in-symfony-1-1 How to create an optimized version of your website for the iPhone in symfony 1.1] to learn how to create a web site using symfony for iphone.
