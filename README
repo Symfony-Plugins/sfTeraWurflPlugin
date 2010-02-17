@@ -1,5 +1,6 @@
 = sfTeraWurflPlugin plugin =
 The sfTeraWurflPlugin plugin bridges the symfony framework and [http://www.tera-wurfl.com/ Tera-WURFL ] PHP/MySQL API library which is a PHP & MySQL based library that uses the Wireless Universal Resource File (WURFL) to detect the capabilities of mobile devices.
+The purpose of this plugin is to facilitate the creation of web sites that can be explored properly by mobile browsers such as iphone, nokia, samsung, blackberry.... to learn more, visit this link [http://symfony-mobile.blogspot.com/2010/02/step-by-step-how-to-create-mobile.html step by step How to create a mobile website using symfony]
 
 == Installation ==
 
@@ -12,7 +13,8 @@ $ symfony plugin:install sfTeraWurflPlugin
 
 Alternatively, if you don't have PEAR installed, you can download the latest
 package attached to this plugin's wiki page and extract it under your project's
-`plugins/` directory. 
+`plugins/` directory.
+You can also refer to the plugin's Subversion repository by doing a checkout or an svn:externals of http://svn.symfony-project.com/plugins/sfTeraWurflPlugin.
 
 Clear the cache to enable the autoloading to find the new classes:
 {{{
