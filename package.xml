@@ -13,17 +13,17 @@
     <email>mabroukskander@gmail.com</email>
     <active>yes</active>
   </lead>
-  <date>2010-02-17</date>
+  <date>2010-02-18</date>
   <version>
-    <release>0.0.2</release>
-    <api>0.0.2</api>
+    <release>0.9.8</release>
+    <api>0.9.8</api>
   </version>
   <stability>
     <release>alpha</release>
     <api>alpha</api>
   </stability>
   <license uri="http://www.symfony-project.org/license">MIT license</license>
-  <notes>- first implémentation of sfTeraWurflPlugin</notes>
+  <notes>- basic implémentation of sfTeraWurflPlugin</notes>
   <contents>
     <dir name="/">
 	 	<dir name="config">
@@ -41,7 +41,7 @@
 	 			<file name="TeraWurflDatabase_MySQL5.php" role="data" />
 	 		</dir>
 	 		<dir name="helper">
-	 			<file name="teraWurfulHelper.php" role="data" />
+	 			<file name="teraWurflHelper.php" role="data" />
 	 		</dir>
 	 		<dir name="task">
 	 			<file name="terawurflCheckconfigTask.class.php" role="data" />
@@ -155,16 +155,19 @@
   <changelog>
   	<release>
   		<version>
-  			<release>0.0.2</release>
-  			<api>0.0.1</api>
+  			<release>0.9.8</release>
+  			<api>0.9.8</api>
   		</version>
   		<stability>
   			<release>alpha</release>
   			<api>alpha</api>
   		</stability>
-  		<date>2010-02-17</date>
+  		<date>2010-02-18</date>
   		<notes>
-  			* skonsoft: cleaning up plugin
+  			* skonsoft: fixing the 1.0.0 alpha version
+  			* skonsoft: fixing app.yml as default config file
+  			* skonsoft: fixing helper
+  			* skonsoft: fixing readme file
   		</notes>
   	</release>
   </changelog>
