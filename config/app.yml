@@ -1,10 +1,17 @@
 all: 
   sfTeraWurflPlugin: 
     data_dir: "%sf_plugins_dir%/sfTeraWurflPlugin/data/" # important !
+    thumb_dir: "%sf_web_dir%/images/thumbs/"      # where generated images should be stored. be careful when changing it ! your thumbs should be under sf_web_dir
     data_file: "wurfl.xml"
     patch_file: "custom_web_patch.xml;web_browsers_patch.xml"
     download_url: "http://downloads.sourceforge.net/project/wurfl/WURFL/latest/wurfl-latest.zip"
     cvs_download_url: "http://wurfl.cvs.sourceforge.net/%2Acheckout%2A/wurfl/xml/wurfl.xml"
+    override_memory_limit: true     #Enable to override PHP's memory limit if you are having problems loading the WURFL data like this:
+                                    #Fatal error: Allowed memory size of 67108864 bytes exhausted (tried to allocate 24 bytes) in TeraWurflLoader.php on line 287
+                                    
+    memory_limit:  "256M"       #size of memory to be allocated when override_memory_limit is activated
+    
+    
     database: 
       host: localhost
       name: terawurfl       #database name

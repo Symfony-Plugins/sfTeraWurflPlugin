@@ -230,5 +230,20 @@ class sfTeraWurflConfig{
 	public static function getCvsDownloadUrl(){
 		 return sfConfig::get("app_sfTeraWurflPlugin_cvs_download_url");
 	}
+	/**
+	 * check if override memory limit is enabled
+	 * @return bool
+	 */
+	public static function isOverrideMemoryLimitEnabled(){
+		return sfConfig::get("app_sfTeraWurflPlugin_override_memory_limit");
+	}
+	/**
+	 * PHP Memory Limit.  
+	 * @See isOverrideMemoryLimitEnabled for more info
+	 * @return string
+	 */
+	public static function getMemoryLimit(){
+		return sfConfig::get("app_sfTeraWurflPlugin_memory_limit");
+	}
 }
 ?>
