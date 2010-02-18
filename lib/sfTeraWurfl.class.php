@@ -353,6 +353,40 @@ class sfTeraWurfl{
 		}
 	}
 	/**
+	 * return the current user agent max width screen, it's a short link to $this->capabilities ['display'] ['max_image_width'];
+	 * @return int
+	 */
+	public function getUserAgentWidthScreen(){
+		$user = sfContext::getInstance()->getUser();
+		if ($user->hasAttribute("user_agent_screen_max_width")){
+			return $user->getAttribute("user_agent_screen_max_width");
+		}
+		if (count($this->capabilities)==0) {
+			$this->getDeviceCapabilitiesFromAgent(NULL,TRUE);
+			
+		}
+		$width =  $this->capabilities ['display'] ['max_image_width'];
+		$user->setAttribute("user_agent_screen_max_width",$width);
+		return $width;		
+	}
+	/**
+	 * return the current user agent max height screen, it's a short link to $this->capabilities ['display'] ['max_image_height'];
+	 * @return int
+	 */
+	public function getUserAgentHeightScreen(){
+		$user = sfContext::getInstance()->getUser();
+		if ($user->hasAttribute("user_agent_screen_max_height")){
+			return $user->getAttribute("user_agent_screen_max_height");
+		}
+		if (count($this->capabilities)==0) {
+			$this->getDeviceCapabilitiesFromAgent(NULL,TRUE);
+			
+		}
+		$height =  $this->capabilities ['display'] ['max_image_height'];
+		$user->setAttribute("user_agent_screen_max_height",$height);
+		return $height;	
+	}
+	/**
 	 * should be removed on next update !
 	 * use sfTeraWurflConfig::getDataDir() method 
 	 * @deprecated 
