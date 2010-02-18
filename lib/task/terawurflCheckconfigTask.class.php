@@ -42,9 +42,18 @@ EOF;
 
   protected function execute($arguments = array(), $options = array())
   {
+  	$app = "frontend";
+  	$env = "dev";
+  	if (isset($options["application"]))
+  		$app = $options["application"];
+  	if (isset($options["env"]))
+  		$env = $options["env"];
+  	$configuration = ProjectConfiguration::getApplicationConfiguration($app, $env, true);
+  	$configuration->activate();
+  	
 	$error = FALSE;
     $tw = new sfTeraWurfl();
-    $dir = $tw->rootdir.sfTeraWurflConfig::$DATADIR;
+    $dir = sfTeraWurflConfig::getDataDir();
     echo "\nChecking TeraWurfl environnement ...\n";
     echo "TeraWurfl Version ".$tw->release_branch." ".$tw->release_version."\n";
     echo "*******************Checking PHP Configuration***********\n";
@@ -62,21 +71,21 @@ EOF;
 		Note: you can still use Tera-WURFL without ZipArchive, Tera-WURFL will attempt to call the gunzip program from your system to unzip the compressed WURFL archive.
 		If this fails, you must download the archive manually and extract wurfl.xml to your data/ directory.\n";
 	}
-	if(sfTeraWurflConfig::$OVERRIDE_MEMORY_LIMIT){
-		echo "Memory Limit ".sfTeraWurflConfig::$MEMORY_LIMIT." (via sfTeraWurflConfig::\$MEMORY_LIMIT) \n";
+	if(sfTeraWurflConfig::isOverrideMemoryLimitEnabled()){
+		echo "Memory Limit ".sfTeraWurflConfig::getMemoryLimit()." (via app_sfTeraWurflPlugin_memory_limit) \n";
 	}else{
 		echo "Memory Limit ".ini_get("memory_limit")." (via php.ini)\n";
 	}
     echo "*******************File Permissions***********\n";
     echo "Wurfl File \t";
-    if(is_file($dir.sfTeraWurflConfig::$WURFL_FILE) && is_readable($dir.sfTeraWurflConfig::$WURFL_FILE))
+    if(is_file($dir.sfTeraWurflConfig::getDataFile()) && is_readable($dir.sfTeraWurflConfig::getDataFile()))
 		echo "[OK]\n";
 	else{
 		echo "WARNING: File doesn't exist or isn't readable.  You can continue like this, you just can't update the database from your local wurfl.xml. [FAIL]\n";
 		$error = TRUE;
 	}
 	echo "Patch Files:\n";
-  	$files = explode(';',sfTeraWurflConfig::$PATCH_FILE);
+  	$files = explode(';',sfTeraWurflConfig::getPatchFile());
 	foreach($files as $thisfile){
 		echo "$dir.$thisfile...";
 		if(is_file($dir.$thisfile) && is_readable($dir.$thisfile))
@@ -95,10 +104,10 @@ sudo chmod -R g+rw data/ \n";
 		$error = TRUE;
 	}
 	echo "********************* Database Settings************\n";
-	echo "Host: ".sfTeraWurflConfig::$DB_HOST."\n";
-	echo "Username: ".sfTeraWurflConfig::$DB_USER."\n";
+	echo "Host: ".sfTeraWurflConfig::getDataBaseHost()."\n";
+	echo "Username: ".sfTeraWurflConfig::getDataBaseUserName()."\n";
 	echo "Connecting to server....";
-	@$dbtest = new mysqli(sfTeraWurflConfig::$DB_HOST,sfTeraWurflConfig::$DB_USER,sfTeraWurflConfig::$DB_PASS,sfTeraWurflConfig::$DB_SCHEMA);
+	@$dbtest = new mysqli(sfTeraWurflConfig::getDataBaseHost(),sfTeraWurflConfig::getDataBaseUserName(),sfTeraWurflConfig::getDataBasePassword(),sfTeraWurflConfig::getDataBaseName());
 	if(mysqli_connect_errno()){
 		echo "[FAIL]\nERROR: ".mysqli_connect_error()."\n";
 		$error = TRUE;
@@ -106,7 +115,7 @@ sudo chmod -R g+rw data/ \n";
 		echo "[OK]\n";
 	}
 	
-	echo "DB Name (schema):". sfTeraWurflConfig::$DB_SCHEMA."\n";
+	echo "DB Name (schema):". sfTeraWurflConfig::getDataBaseName()."\n";
 	
     if (!$error)
     	echo "TeraWurfl environnement checking \t [OK]\n";
