@@ -225,7 +225,8 @@ and for each template we create 3 other templates like: indexSuccess.iphone.php 
 
 the last thing is adding this line into each template:
 {{{
-indexSuccess.iphone.php
+$ indexSuccess.iphone.php
+
  <?php decorate_with ( 'layout' );?>
  }}}
 
