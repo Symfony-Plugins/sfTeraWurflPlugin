@@ -1,4 +1,5 @@
 = sfTeraWurflPlugin plugin =
+
 The sfTeraWurflPlugin plugin bridges the symfony framework and [http://www.tera-wurfl.com/ Tera-WURFL ] PHP/MySQL API library which is a PHP & MySQL based library that uses the Wireless Universal Resource File (WURFL) to detect the capabilities of mobile devices.
 The purpose of this plugin is to facilitate the creation of web sites that can be explored properly by mobile browsers such as iphone, nokia, samsung, blackberry.... to learn more, visit this link [http://symfony-mobile.blogspot.com/2010/02/step-by-step-how-to-create-mobile.html step by step How to create a mobile website using symfony]
 
@@ -28,28 +29,16 @@ You're done.
 == Configuration ==
 '''Note''': This release version is just an implementation of [http://www.tera-wurfl.com/ Tera-WURFL ] PHP/MySQL API library ! for now we'll just use the Tera-WURFL files  and implement them into our project. it still an alpha version.
 
-First, You should, edit the TeraWurflConfig.php:
+First, You should, edit the app.yml:
 {{{
-	/**
-	 * Database Hostname
-	 * @var String
-	 */
-	public static $DB_HOST = "localhost"; //server name
-	/**
-	 * Database User
-	 * @var String
-	 */
-	public static $DB_USER = "terawurfl"; // mysql user
-	/**
-	 * Database Password
-	 * @var String
-	 */
-	public static $DB_PASS = 'terawurfladmin'; // mysql password
-	/**
-	 * Database Name / Schema Name
-	 * @var String
-	 */
-	public static $DB_SCHEMA = "terawurfl"; // mysql database
+$ app.yml
+
+  all:
+	database: 
+      host: localhost
+      name: terawurfl       #database schema name
+      username: terawurfl
+      password: terawurfladmin
 }}}
 
 '''Note''': For clariy, I suggest that you use a different data base and not your main project database.
@@ -57,7 +46,10 @@ First, You should, edit the TeraWurflConfig.php:
 sfTeraWurflPlugin comes with an important module: sfTeraWurflAdmin, you will use this module to initialize database tables.
 go to your application settings.yml file and enable this module:
 {{{
-enabled_modules:        [default, sfTeraWurflAdmin]
+  $ settings.yml
+
+all:
+  enabled_modules:        [default, sfTeraWurflAdmin]
 }}}
 
 You can now start using the sfTeraWurflAdmin by browsing to the application module's default page:
@@ -98,7 +90,7 @@ if every things are ok, you will have response:
 
 Now sfTeraWurflPlugin environment is ok, we start using it.
 
-== Content ==
+== How to use it ==
 
 Get the User Agent capabilities:
 {{{
@@ -120,4 +112,140 @@ Get the User Agent capabilities:
 
 To get the complete list of capabilities is available here: [http://wurfl.sourceforge.net/help_doc.php#product_info http://wurfl.sourceforge.net/help_doc.php#product_info]
 
+== Step by step: how to create a symfony mobile web site ==
+
+We have many mobile devices like iphone, samsung, nokia, blackberry ...
+How to create a web site that should be browsed by these devices and in the same time by desctops ?
+
+ie:
+	when a descktop browser visit our ou web site, we render a classic html page
+	when a mobile browser visit our web site we render an XHTML MP page.
+
+to facilitate our work, we suppose that we have 4 categories of browsers:
+* Category 1: Desctops and laptops (render classic HTML Page)
+* Category 2: iphone, ipod and Android (we render XHTML MP page + js )
+* Category 3: mobile devices that have a touch screen (we render XHTML MP page + advanced css pages)
+* Category 4: classic mobile devices that can parse xhtml mp files (we render XHTML MP + simple css pages)
+
+First Step:
+edit your ProjectConfiguration.class.php file like:
+{{{
+$ ProjectConfiguration.class.php
+
+class ProjectConfiguration extends sfProjectConfiguration
+{
+  public function setup()
+  {
+    // for compatibility / remove and enable only the plugins you want
+    $this->enableAllPluginsExcept(array('sfDoctrinePlugin', 'sfCompat10Plugin'));
+    $this->dispatcher->connect('request.filter_parameters', array($this, 'filterRequestParameters'));
+    $this->dispatcher->connect('view.configure_format', array($this, 'configureMobileFormat'));
+    
+  }
+  /**
+   * filters requests
+   * @param sfEvent $event
+   */
+  public function filterRequestParameters(sfEvent $event, $parameters)
+  { 	
+  	$request = $event->getSubject();
+  	
+  	$wurfl = new sfTeraWurfl();
+  	$wurfl->getDeviceCapabilitiesFromAgent(NULL, TRUE);
+  	$cap = $wurfl->capabilities;
+  	if ($cap ['product_info']['is_wireless_device'] == 1){
+	  	if (strpos ( $cap ['user_agent'], 'iPhone' ) !== false or strpos ( $cap ['user_agent'], 'iPod' ) !== false or strpos ( $cap ['user_agent'], 'Android' ) !== false) {
+			$device = 'iphone';
+		} elseif ($cap ['product_info'] ['pointing_method'] == 'touchscreen') {
+			$device = 'touch';
+		} else {
+			$device = 'xhtmlmp';
+		}
+		$request->setRequestFormat($device);
+  	}
+  	return $parameters;
+  }
+  /**
+   * configures mobile formats
+   */
+  public function configureMobileFormat(sfEvent $event)
+  {
+  	if ($event['format']=='xhtmlmp' || $event['format']=='touch' || $event['format']=='iphone'){
+      	sfContext::getInstance()->getResponse()->removeStylesheet("main");
+    }
+    if ($event['format']=='xhtmlmp')
+    	sfContext::getInstance()->getResponse()->addStylesheet("xhtmlmp");
+  	if ($event['format']=='touch')
+    	sfContext::getInstance()->getResponse()->addStylesheet("touch");
+   	if ($event['format']=='iphone')
+    	sfContext::getInstance()->getResponse()->addStylesheet("iphone");
+  }
+}
+}}}
+In setup method, we have associate filters to Request and View.
+In filterRequestParameters we have filtered the response switch browser category.
+In configureMobileFormat we have added styles switch browser category.
+
+
+Second Step:
+configure factories.yml file (in your application config dir), it should be like this:
+{{{
+$ factories.yml
+
+all:
+
+  request:
+    class: sfWebRequest
+    param:
+      logging:           %SF_LOGGING_ENABLED%
+      path_info_array:   SERVER
+      path_info_key:     PATH_INFO
+      relative_url_root: ~
+      formats:
+        txt:  text/plain
+        js:   [application/javascript, application/x-javascript, text/javascript]
+        css:  text/css
+        json: [application/json, application/x-json]
+        xml:  [text/xml, application/xml, application/x-xml]
+        rdf:  application/rdf+xml
+        atom: application/atom+xml
+
+        iphone:   [application/vnd.wap.xhtml+xml, application/xhtml+xml]
+        xhtmlmp:  [application/vnd.wap.xhtml+xml, application/xhtml+xml]
+        touch:    [application/vnd.wap.xhtml+xml, application/xhtml+xml]
+#        wml:  text/vnd.wap.wml               #here we do not support wml language
+}}}
+
+here we informed Symfony that he should render the correct page switch request device.
+
+
+Third Step :
+Now, we should create 3 layouts rather then the default : layout.iphone.php, layout.touch.php and layout.xhtmlmp.php
+and for each template we create 3 other templates like: indexSuccess.iphone.php and the same thing for other.
+
+the last thing is adding this line into each template:
+{{{
+indexSuccess.iphone.php
+ <?php decorate_with ( 'layout' );?>
+ }}}
+
+You should also create your css files or/and Js files.
+
+when you want to add images to your web site, you will get many size problems. sfTeraWurflPlugin comes with a good helper: trawurflHelper.
+you need just to use  tw_generateThumb to generate dynamically  the image switch browser device.
+{{{
+$ indexSuccess.xhtmlmp.php
+
+use_helper("teraWurfl");
+
+$image_path = tw_generateThumb("myimage", 0.98, 0.20 );
+echo image_tag($image_path);
+}}} 
+tw_generateThumb is very helpfull when you want for example add a banner on the top of your web site.
+the new image sizes are calculated in percent of device screen. it generate the new image only when first visit of device,
+otherwise, it returns the old generated image for this device.
+Now clear cache and browse your web site from your preferd deice :)
+
 Refer to [http://www.symfony-project.org/blog/2008/06/09/how-to-create-an-optimized-version-of-your-website-for-the-iphone-in-symfony-1-1 How to create an optimized version of your website for the iPhone in symfony 1.1] to learn how to create a web site using symfony for iphone.
+
+If you have any problem, contact me mabroukskander[at]gmail.com <skander mabrouk>.
